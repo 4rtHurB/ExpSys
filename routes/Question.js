@@ -38,21 +38,11 @@ router.put('/questions/:id', (req, res) => {
 });
 
 router.post('/questions/:id/answer', (req, res) => {
-  const my = {
-    "text": "Yes",
-    "next": {
-      "id": "5a061d3205abb91e7b199e7f",
-      "text": "Test Question1"
-    }
-  };
-
   const createAnswer = {
-    $push: { 'answers': my }
+    '$push': { 'answers': req.body }
   };
 
-  console.log(createAnswer);
-  Question.findOneAndUpdate({ '_id': req.params.id }, createAnswer).then(() => {
-    console.log(ObjectId(req.params.id));
+  Question.findOneAndUpdate( ObjectId(req.params.id), createAnswer).then(() => {
     Question.findOne( ObjectId(req.params.id) ).then(question => {
       res.send(201, question);
     });
@@ -61,7 +51,7 @@ router.post('/questions/:id/answer', (req, res) => {
 
 router.delete('/questions/:idQuest/answers/:idAnsw', (req, res) => {
   const removeAnswer = {
-    '$pull': { 'answers': { '_id': ObjectId(req.params.idAnsw) } }
+    '$pull': { 'answers': { '_id': req.params.idAnswgi } }
   };
 
   Question.findOneAndUpdate( ObjectId(req.params.idQuest), removeAnswer).then(() => {
@@ -76,11 +66,11 @@ router.put('/questions/:idQuest/answers/:idAnsw', (req, res) => {
     '$set' : { 'answers.$' : req.body }
   };
   const searchAnswer = {
-    'answers._id': ObjectId(req.params.id)
+    'answers._id': req.params.idAnsw
   };
 
   Question.findOneAndUpdate(searchAnswer, updateAnswer).then(() => {
-    Question.findOne(searchAnswer).then(question => {
+    Question.findOne( ObjectId(req.params.idQuest) ).then(question => {
       res.send(200, question);
     });
   });

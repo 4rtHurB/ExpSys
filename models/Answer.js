@@ -11,12 +11,11 @@ const AnswerSchema = new Schema({
       required: true
     },
     text: {
-      type: Schema.Types.ObjectId,
+      type: String,
       required: true
     }
 
   }
 });
-
 
 export default AnswerSchema;
