@@ -1,9 +1,11 @@
 var path = require('path');
+var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
-  entry: './App.js',
+  entry: './src/App.js',
+  devtool: 'source-map',
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'app.bundle.js'
@@ -35,6 +37,12 @@ module.exports = {
       filename: 'app.css',
       disable: false,
       allChunks: true
-    })
+    }),
+    new webpack.DefinePlugin({
+      'process.env': {
+        'NODE_ENV': JSON.stringify('production'),
+      }
+    }),
+    new webpack.optimize.UglifyJsPlugin()
   ]
 };

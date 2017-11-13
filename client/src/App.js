@@ -5,8 +5,10 @@ import Root from './containers/Root';
 import store from './stores';
 
 ReactDOM.render(
-  <Provider store = { store }>
-    <Root />
-  </Provider>,
+  <div>
+    <Provider store={store}>
+      <Root />
+    </Provider>
+  </div>,
   document.getElementById('root')
 );

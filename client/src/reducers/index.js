@@ -1,5 +1,8 @@
 import { combineReducers } from 'redux';
+import isFetching from './isFetching';
+import activeQuestion from './activeQuestion';
 
-const reducer = 0;
-
-export default reduser;
+export default combineReducers({
+  isFetching,
+  activeQuestion
+});
