@@ -18,7 +18,14 @@ router.get('/questions', (req, res) => {
 });
 
 router.get('/questions/:id', (req, res) => {
-  Question.findOne( ObjectId(req.params.id) ).then(question => {
+  const { id } = req.params;
+
+  if (id !== 'first') {
+    console.log(id);
+    Question.findOne({ '_id': id }).then(question => {
+      res.send(200, question);
+    });
+  } else Question.find({ 'first': true }).then(question => {
     res.send(200, question);
   });
 });
