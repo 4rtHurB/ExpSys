@@ -6,6 +6,10 @@ const QuestionSchema = mongoose.Schema({
     type: String,
     required: true
   },
+  first: {
+    type: Boolean,
+    default: false
+  },
   answers: [AnswerSchema]
 });
 

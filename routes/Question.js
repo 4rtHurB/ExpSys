@@ -18,20 +18,31 @@ router.get('/questions', (req, res) => {
 });
 
 router.get('/questions/:id', (req, res) => {
-  Question.findOne( ObjectId(req.params.id) ).then(question => {
+  const { id } = req.params;
+
+  if (id !== 'first') {
+    console.log(id);
+    Question.findOne({ '_id': id }).then(question => {
+      res.send(200, question);
+    });
+  } else Question.findOne({ 'first': true }).then(question => {
     res.send(200, question);
   });
 });
 
 router.delete('/questions/:id', (req, res) => {
-  Question.findOneAndRemove( ObjectId(req.params.id) ).then(question => {
+  const { id } = req.params;
+
+  Question.findOneAndRemove({ '_id': id }).then(question => {
     res.send(200, question);
   });
 });
 
 router.put('/questions/:id', (req, res) => {
-  Question.findOneAndUpdate( ObjectId(req.params.id), req.body).then(() => {
-    Question.findOne( ObjectId(req.params.id) ).then(question => {
+  const { id } = req.params;
+
+  Question.findOneAndUpdate({ '_id': id }, req.body).then(() => {
+    Question.findOne({ '_id': id }).then(question => {
       res.send(200, question);
     });
   });
@@ -42,35 +53,41 @@ router.post('/questions/:id/answer', (req, res) => {
     '$push': { 'answers': req.body }
   };
 
-  Question.findOneAndUpdate( ObjectId(req.params.id), createAnswer).then(() => {
-    Question.findOne( ObjectId(req.params.id) ).then(question => {
-      res.send(201, question);
+  Question.findOneAndUpdate({ '_id': req.params.id }, createAnswer).then(() => {
+    Question.findOne({ '_id': req.params.id }).then(question => {
+      res.send(201,
+        question.answers.splice(question.answers.length-1)[0]);
     });
   });
 });
 
-router.delete('/questions/:idQuest/answers/:idAnsw', (req, res) => {
+router.delete('/questions/:idQuestion/answers/:idAnswer', (req, res) => {
+  const { idAnswer, idQuestion } = req.params;
+  const searchQuestion = {
+    '_id': idQuestion
+  };
   const removeAnswer = {
-    '$pull': { 'answers': { '_id': req.params.idAnswgi } }
+    '$pull': { 'answers': { '_id': idAnswer } }
   };
 
-  Question.findOneAndUpdate( ObjectId(req.params.idQuest), removeAnswer).then(() => {
-    Question.findOne( ObjectId(req.params.idQuest) ).then(question => {
+  Question.findOneAndUpdate(searchQuestion, removeAnswer).then(() => {
+    Question.findOne(searchQuestion).then(question => {
       res.send(200, question);
     });
   });
 });
 
-router.put('/questions/:idQuest/answers/:idAnsw', (req, res) => {
+router.put('/questions/:idQuestion/answers/:idAnswer', (req, res) => {
+  const { idQuestion, idAnswer } = req.params;
   const updateAnswer = {
     '$set' : { 'answers.$' : req.body }
   };
   const searchAnswer = {
-    'answers._id': req.params.idAnsw
+    'answers._id': idAnswer
   };
 
   Question.findOneAndUpdate(searchAnswer, updateAnswer).then(() => {
-    Question.findOne( ObjectId(req.params.idQuest) ).then(question => {
+    Question.findOne({ '_id': idQuestion }).then(question => {
       res.send(200, question);
     });
   });
