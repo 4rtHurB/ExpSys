@@ -15,6 +15,14 @@ mongoose.connect('mongodb://' + DB, {
   console.log('connected to mongodb:/' + DB);
 });
 
+const allowCrossDomain = (req, res, next) => {
+  res.header('Access-Control-Allow-Origin', "*");
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
+  next();
+};
+
+app.use(allowCrossDomain);
 app.use( bodyParser.json() );
 app.use( bodyParser.urlencoded({ extended: true }) );
 app.use('/api', routes);
