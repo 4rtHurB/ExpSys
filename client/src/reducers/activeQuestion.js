@@ -1,11 +1,11 @@
-import {RECEIVE_QUESTION, REQUEST_QUESTION } from "../constants/index";
+import {RECEIVE_ACTIVE_QUESTION } from "../constants/index";
 
 const activeQuestion = (state = { }, action) => {
-  switch (action.type) {
-    case RECEIVE_QUESTION:
-      return Object.assign({ }, state, {
-        activeQuestion: action.question
-      });
+  const { type, data } = action;
+
+  switch (type) {
+    case RECEIVE_ACTIVE_QUESTION:
+      return Object.assign({ }, state, data);
     default:
       return state;
   }
