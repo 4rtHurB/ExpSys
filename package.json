@@ -13,9 +13,6 @@
   },
   "author": "4rtHurB",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/4rtHurB/ExpSys/issues"
-  },
   "homepage": "https://github.com/4rtHurB/ExpSys#readme",
 "devDependencies": {
     "babel-core": "^6.26.0",
